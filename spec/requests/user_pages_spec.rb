@@ -19,6 +19,9 @@ describe "User pages" do
       before(:all) { 30.times { FactoryGirl.create(:user) } }
       after(:all)  { User.delete_all }
 
+      let(:first_page)  { User.paginate(page: 1) }
+      let(:second_page) { User.paginate(page: 2) }
+
       it { should have_link('Next') }
       it { should have_link('2') }
 
@@ -30,6 +33,18 @@ describe "User pages" do
           sign_in admin
           visit users_path
         end
+
+      it "should list the first page of users" do
+        first_page.each do |user|
+          page.should have_selector('li', text: user.name)
+        end
+      end
+
+      it "should not list the second page of users" do
+        second_page.each do |user|
+          page.should_not have_selector('li', text: user.name)
+        end
+      end
 
         it { should have_link('delete', href: user_path(User.first)) }
         it "should be able to delete another user" do

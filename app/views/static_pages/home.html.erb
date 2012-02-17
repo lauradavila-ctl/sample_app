@@ -6,5 +6,9 @@
   <a href="http://railstutorial.org/">Ruby on Rails Tutorial</a>
   sample application.
 </p>
+  <% if signed_in? %>
+<%= link_to "Sign up now!", root_path, class: "signup_button round" %>
+<% else %>
 
 <%= link_to "Sign up now!", signup_path, class: "signup_button round" %>
+<% end %>
